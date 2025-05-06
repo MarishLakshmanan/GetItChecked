@@ -12,6 +12,7 @@ import { useFile } from "@/utilities/fileContext/main";
 import { redirect, useRouter } from "next/navigation";
 import CustomProgressBar from "@/utilities/progress/main";
 import { useAuth } from "@clerk/nextjs";
+import UploadingModal from "@/utilities/loading/main";
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -32,15 +33,16 @@ export default function PdfViewerPage() {
     const [modal, setModal] = useState(false)
     const router = useRouter()
     const {getToken} = useAuth()
+    const [uploading,setUploading] = useState(false)
 
     useEffect(() => {
+        setUploading(false)
         if (jobId == null) return;
-    
         const interval = setInterval(async () => {
             try {
                 const res = await fetch(`${backendUrl}/status?job_id=${jobId}`);
                 const data = await res.json();
-                console.log(data);
+                // console.log(data);
                 
                 
     
@@ -90,6 +92,7 @@ export default function PdfViewerPage() {
     // };
 
     const handleUpload = async () => {
+        setUploading(true)
         const formData = new FormData()
         formData.set("file", pdf)
         formData.set("service", service)
@@ -97,15 +100,16 @@ export default function PdfViewerPage() {
             const token = await getToken()
             
             const res = await fetch(`${backendUrl}/upload`, { method: "POST", body: formData, headers:{Authorization:`Bearer ${token}`} })
-            console.log(res);
+            // console.log(res);
             if (res.ok) {
                 const json = await res.json()
-                console.log(json);
+                // console.log(json);
                 setJobID(json.job_id)
                 setModal(true)
             }
         } catch (e) {
-            console.log(e);
+            setUploading(false)
+            console.error(e);
             setTimeout(()=>{
                 setErrorMsg(null)
             },3000)
@@ -178,6 +182,7 @@ export default function PdfViewerPage() {
               </Box>}
                     </Box>
                     <CustomProgressBar status={status} msg={msg} doc={currDoc} service={service} modal={modal} close={handleClose} />
+                    <UploadingModal open={uploading} />
                 </Box>
             </Box>
         </ThemeProvider>

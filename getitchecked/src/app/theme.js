@@ -64,7 +64,10 @@ const theme = createTheme({
       fontSize: "24px",
       lineHeight: "150%",
       letterSpacing: " 0px",
-      color:"#000"
+      color:"#000",
+      [`@media (max-width:600px)`]: {
+        fontSize: "20px",
+      },
     },
     h3: {
       fontFamily: "Montserrat",
