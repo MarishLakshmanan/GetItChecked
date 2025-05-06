@@ -100,7 +100,7 @@ def upload():
 
     job_id = str(uuid.uuid4())
     file_path = os.path.join(UPLOAD_FOLDER, f"{job_id}.pdf")
-    file.save(file_path)
+    # file.save(file_path)
 
     job_queue = Queue()
     jobs[job_id] = {
@@ -114,12 +114,14 @@ def upload():
 
     return jsonify({'job_id': job_id})
 
-@app.route('/status/<job_id>', methods=['GET'])
-def check_status(job_id):
-    job = jobs.get(job_id)
-    if not job:
+@app.route('/status', methods=['GET'])
+def check_status():
+    job_id = request.args.get('job_id')
+    print(job_id)
+    if not job_id or job_id not in jobs:
         return jsonify({'error': 'Invalid job ID'}), 404
-
+    
+    job = jobs[job_id]
     q = job['queue']
 
     def event_stream():

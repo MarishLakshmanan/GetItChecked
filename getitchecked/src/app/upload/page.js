@@ -33,10 +33,12 @@ export default function PdfViewerPage() {
 
     useEffect(() => {
         if (jobId == null) return
-        const eventSource = new EventSource(`${backendUrl}/status/${jobId}`);
+        const eventSource = new EventSource(`${backendUrl}/status?job_id=${jobId}`);
         eventSource.onmessage = (event) => {
+            console.log(event);
+            
             const data = JSON.parse(event.data);
-            // console.log(data);
+            console.log(data);
 
             if (data.status === 'processing') {
                 setProgress(data)
