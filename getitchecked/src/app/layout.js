@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FileContextProvider } from "@/utilities/fileContext/main";
 import { ClerkProvider, SignedIn, SignIn,SignedOut } from "@clerk/nextjs";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./theme";
 
 
 const geistSans = Geist({
@@ -43,7 +45,10 @@ export default function RootLayout({ children }) {
       >
         <ClerkProvider>
             <FileContextProvider>
+              <ThemeProvider theme={theme}>
+
               {children}
+              </ThemeProvider>
             </FileContextProvider>
         </ClerkProvider>
       </body>

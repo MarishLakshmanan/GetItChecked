@@ -75,12 +75,12 @@ export default function Home() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+   
       <Box className="w-full h-screen flex flex-col">
         <Header />
         <Box className="w-full h-full p-8 bg-white mt-20">
           <Box
-            className={`w-full h-full flex items-center justify-center border-dashed border-2 rounded-md transition-all duration-200 ${
+            className={`w-full h-full flex items-center justify-center border-dashed border-2 rounded-md transition-all duration-200 from-bottom ${
               isDragging ? "border-[#4f83ff] bg-[#e0edff]" : "border-[#93b4f5] bg-[#f0f6ff]"
             }`}
             onDrop={handleDrop}
@@ -147,6 +147,6 @@ export default function Home() {
           </Box>
         </Box>
       </Box>
-    </ThemeProvider>
+    
   );
 }

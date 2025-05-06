@@ -25,7 +25,7 @@ export default function UploadingModal({ open }) {
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={handleClose} className='from-top'>
       <Box sx={style}>
         <CircularProgress />
         <Typography variant="h6" sx={{ mt: 2 }}>

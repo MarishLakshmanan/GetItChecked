@@ -23,7 +23,7 @@ export default function Home() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+   
       <Box className="w-full h-screen flex flex-col">
         <Header />
         <Box className="flex p-10 pt-20 flex-col md:flex-row items-center justify-center h-full w-full gap-12">
@@ -80,6 +80,6 @@ export default function Home() {
         </Box>
 
       </Box>
-    </ThemeProvider>
+    
   );
 }
