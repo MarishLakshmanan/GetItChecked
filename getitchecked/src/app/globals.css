@@ -6,3 +6,14 @@
 }
 
 
+
+.from-bottom{
+  position: relative;
+  animation-name:fromBottom;
+  animation-duration: 1s;
+}
+
+@keyframes fromBottom{
+  from {bottom:-20px;opacity:0}
+  to{bottom:0px;opacity:1}
+}

@@ -1,5 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { FileContextProvider } from "@/utilities/fileContext/main";
+import { ClerkProvider, SignedIn, SignIn,SignedOut } from "@clerk/nextjs";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Get It Checked",
   description: "A tool to check your legal documents",
+  icons:{
+    icon:"/favicon.png"
+  }
 };
 
 export default function RootLayout({ children }) {
@@ -35,7 +41,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ClerkProvider>
+            <FileContextProvider>
+              {children}
+            </FileContextProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

@@ -24,7 +24,7 @@ const palette = {
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#60A5FA',  // your primary blue
+      main: '#0055ff',  // your primary blue
       light: '#93C5FD', // lighter version for hover/focus
       dark: '#3B82F6',  // darker version for active state
       contrastText: '#ffffff', // text on primary button
@@ -37,7 +37,7 @@ const theme = createTheme({
     },
     background: {
       default: '#ffffff', // body background
-      paper: '#FFF2f2',   // card/sidebar background
+      paper: '#fff',   // card/sidebar background
       secondary:"#f8fafc"
     },
     text: {
@@ -68,7 +68,7 @@ const theme = createTheme({
     },
     h3: {
       fontFamily: "Montserrat",
-      fontWeight: "400",
+      fontWeight: "500",
       fontSize: "18px",
       lineHeight: "24px",
       letterSpacing: " 0.5px",
@@ -92,11 +92,12 @@ const theme = createTheme({
     },
     button: {
       fontFamily: "Inter",
-      fontWeight: "400",
+      fontWeight: "500",
       fontSize: "18px",
       lineHeight: "150%",
       letterSpacing: " 0px",
-      color:"#000"
+      color:"#fff",
+      textTransform:"none"
     },
     caption: {
       fontFamily: "Inter",
@@ -145,7 +146,7 @@ const theme = createTheme({
     MuiButton:{
       styleOverrides: {
         root: {
-          padding: '3px 6px',
+          textTransform:"none"
         },
       },
     },

@@ -9,13 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.18.5",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@lottiefiles/dotlottie-react": "^0.13.5",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "framer-motion": "^12.9.7",
+    "lottie-react": "^2.4.1",
     "next": "15.3.1",
+    "pdfjs-dist": "4.8.69",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-form-stepper": "^2.0.3",
+    "react-pdf": "^9.2.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
