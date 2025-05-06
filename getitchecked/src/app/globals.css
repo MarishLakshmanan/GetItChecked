@@ -19,6 +19,12 @@
   animation-duration: 1s;
 }
 
+.from-top-abs{
+  position: absolute;
+  animation-name:fromTop;
+  animation-duration: 1s;
+}
+
 @keyframes fromBottom{
   from {bottom:-20px;opacity:0}
   to{bottom:0px;opacity:1}

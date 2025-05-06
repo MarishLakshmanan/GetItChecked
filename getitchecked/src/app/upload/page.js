@@ -126,7 +126,7 @@ export default function PdfViewerPage() {
                 <Header />
                 <Box className="w-full overflow-scroll mt-15 h-full flex flex-row max-md:flex-col">
                     {/* PDF Display */}
-                    <Box className="w-2/3 max-md:w-full bg-gray-100 p-4 overflow-scroll from-top">
+                    <Box className="w-2/3 max-md:w-full bg-gray-100 p-4 overflow-scroll">
                         {!pdf ? (
                             <Box className="flex flex-col items-center justify-center">
                                 <Typography>File not selected please go back home and select a file</Typography>
@@ -149,7 +149,7 @@ export default function PdfViewerPage() {
                     </Box>
 
                     {/*  Action */}
-                    <Box className="w-1/3 max-md:w-full bg-white border-b border-b-slate-200  p-8  gap-4 flex flex-col justify-center items-center from-top">
+                    <Box className="w-1/3 max-md:w-full bg-white border-b border-b-slate-200  p-8  gap-4 flex flex-col justify-center items-center">
                         <Box className="w-full">
                             <Typography variant="h3" sx={{ mb: "24px" }} className="mb-6">
                                 Service:
