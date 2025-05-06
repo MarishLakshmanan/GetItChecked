@@ -74,7 +74,7 @@ const isMobile = useMediaQuery(theme.breakpoints.down("md"));
         </Stepper>
       </Box>
 
-      {progress?.status === "processing" && (
+      {(progress?.status === "processing" && (step < steps.length)) && (
         <Typography>{`Checking ${steps[step]}...`}</Typography>
       )}
 

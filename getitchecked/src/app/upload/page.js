@@ -36,7 +36,7 @@ export default function PdfViewerPage() {
         const eventSource = new EventSource(`${backendUrl}/status/${jobId}`);
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log(data);
+            // console.log(data);
 
             if (data.status === 'processing') {
                 setProgress(data)
