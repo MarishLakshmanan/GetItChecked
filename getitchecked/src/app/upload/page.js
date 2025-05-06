@@ -26,46 +26,55 @@ export default function PdfViewerPage() {
     const [service, pdf] = useFile()
     const [errorMsg, setErrorMsg] = useState()
     const [jobId, setJobID] = useState(null)
-    const [progress, setProgress] = useState(null)
+    const [msg, setMsg] = useState(null)
+    const [status,setStatus] = useState(null)
+    const [currDoc,setCurrDoc] = useState(null)
     const [modal, setModal] = useState(false)
     const router = useRouter()
     const {getToken} = useAuth()
 
     useEffect(() => {
-        if (jobId == null) return
-        const eventSource = new EventSource(`${backendUrl}/status?job_id=${jobId}`);
-        eventSource.onmessage = (event) => {
-            console.log(event);
-            
-            const data = JSON.parse(event.data);
-            console.log(data);
-
-            if (data.status === 'processing') {
-                setProgress(data)
+        if (jobId == null) return;
+    
+        const interval = setInterval(async () => {
+            try {
+                const res = await fetch(`${backendUrl}/status?job_id=${jobId}`);
+                const data = await res.json();
+                console.log(data);
+                
+                
+    
+                if (data.status === 'processing') {
+                    setMsg(data.message)
+                    setStatus(data.status)
+                    setCurrDoc(data.current_doc)
+                } else if (data.status === 'error' || data.status === 'complete') {
+                    setMsg(data.message)
+                    setStatus(data.status)
+                    setCurrDoc(data.current_doc)
+                    clearInterval(interval);
+                }
+            } catch (err) {
+                console.error("Polling error:", err);
+                clearInterval(interval);
+                setErrorMsg("Failed to fetch job status. Please try again.");
             }
-            if (data.status === "error") {
-                setProgress(data)
-                eventSource.close()
-            }
-            if (data.status === 'complete') {
-                setProgress(data)
-                eventSource.close();
-            }
-
-            if (data.status === "error") {
-
-            }
-        };
-
-        return () => eventSource.close();
+        }, 4000); // Poll every 2 seconds
+    
+        return () => clearInterval(interval);
     }, [jobId]);
 
     if (service == null) {
         redirect("/dashboard")
     }
 
-    const handleClose = () => {
-        setProgress(null)
+    const handleClose = (e,reason) => {
+        if (reason == "backdropClick") {
+            return // or setModal(false)
+        }
+        setMsg(null)
+        setStatus(null)
+        setCurrDoc(null)
         setModal(false)
     }
     // const [file, setFile] = useState(pdf);
@@ -110,7 +119,7 @@ export default function PdfViewerPage() {
         <ThemeProvider theme={theme}>
             <Box className="w-full h-screen flex flex-col bg-white">
                 <Header />
-                <Box className="w-full overflow-scroll mt-15 flex flex-row max-md:flex-col">
+                <Box className="w-full overflow-scroll mt-15 h-full flex flex-row max-md:flex-col">
                     {/* PDF Display */}
                     <Box className="w-2/3 max-md:w-full bg-gray-100 p-4 overflow-scroll">
                         {!pdf ? (
@@ -168,7 +177,7 @@ export default function PdfViewerPage() {
                 </Typography>
               </Box>}
                     </Box>
-                    <CustomProgressBar progress={progress} service={service} modal={modal} close={handleClose} />
+                    <CustomProgressBar status={status} msg={msg} doc={currDoc} service={service} modal={modal} close={handleClose} />
                 </Box>
             </Box>
         </ThemeProvider>

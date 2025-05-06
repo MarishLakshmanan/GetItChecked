@@ -1,3 +1,4 @@
+
 import { requiredDocuments } from "@/contants/main";
 import {
   Box,
@@ -6,38 +7,37 @@ import {
   Stepper,
   Step,
   StepLabel,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CustomLottie from "../lottie/main";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { useMediaQuery, useTheme } from "@mui/material";
 
-export const ProgressBar = ({ progress, service, close }) => {
+export const ProgressBar = ({ service, close, status, msg, doc }) => {
   const [step, setStep] = useState(0);
   const [errorStep, setErrorStep] = useState(null);
   const steps = requiredDocuments[service] || [];
+
   const theme = useTheme();
-
-const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  useEffect(() => {
-    if (
-      progress?.status === "processing" &&
-      progress?.doc === steps[step] &&
-      step < steps.length
-    ) {
-      setStep((prev) => prev + 1);
-    } else if (progress?.status === "error") {
-      const index = steps.findIndex((s) => s === progress?.doc);
-      setErrorStep(index !== -1 ? index : null);
-    }
-  }, [progress, step, steps]);
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
-    if (progress?.status === "complete") {
-      setStep(steps.length); // mark all steps as complete
+    const index = steps.findIndex((d) => d === doc);
+
+    if (status === "processing" && index !== -1) {
+      // If processing a valid doc, mark all previous ones as done
+      setStep(index);
     }
-  }, [progress, steps.length]);
+
+    if (status === "error" && index !== -1) {
+      setErrorStep(index);
+    }
+
+    if (status === "complete") {
+      setStep(steps.length);
+    }
+  }, [status, doc, steps]);
 
   return (
     <Box className="p-6 flex flex-col items-center justify-center">
@@ -46,9 +46,11 @@ const isMobile = useMediaQuery(theme.breakpoints.down("md"));
       </Box>
 
       <Box className="w-full my-6">
-        <Stepper activeStep={step}
-  orientation={isMobile ? "vertical" : "horizontal"}
-  alternativeLabel={!isMobile}  >
+        <Stepper
+          activeStep={step}
+          orientation={isMobile ? "vertical" : "horizontal"}
+          alternativeLabel={!isMobile}
+        >
           {steps.map((label, index) => {
             const isError = errorStep === index;
             return (
@@ -59,9 +61,9 @@ const isMobile = useMediaQuery(theme.breakpoints.down("md"));
                     isError ? () => <WarningAmberIcon color="error" /> : undefined
                   }
                   optional={
-                    isError && progress?.message ? (
+                    isError && msg ? (
                       <Typography variant="caption" color="error">
-                        {progress.message}
+                        {msg}
                       </Typography>
                     ) : null
                   }
@@ -74,21 +76,22 @@ const isMobile = useMediaQuery(theme.breakpoints.down("md"));
         </Stepper>
       </Box>
 
-      {(progress?.status === "processing" && (step < steps.length)) && (
-        <Typography>{`Checking ${steps[step]}...`}</Typography>
+      {status === "processing" && doc && (
+        <Typography>{`Checking ${doc}...`}</Typography>
       )}
 
-      {progress?.status === "complete" && (
+      {status === "complete" && (
         <Typography sx={{ color: "#008236" }}>
           {`Everything is alright! You can go ahead with filing ${service}.`}
         </Typography>
       )}
+      
 
       <Button
         variant="contained"
         onClick={close}
         sx={{ mt: "10px" }}
-        disabled={progress?.status === "processing"}
+        disabled={(status !== "error") && (status !== "complete")}
       >
         Close
       </Button>
